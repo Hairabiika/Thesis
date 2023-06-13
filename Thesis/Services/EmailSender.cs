@@ -17,7 +17,7 @@ namespace Thesis.Services
 
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            var sendGridKey = @"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";
+            var sendGridKey = @"";
             return Execute(sendGridKey, subject, htmlMessage, email);
         }
 
