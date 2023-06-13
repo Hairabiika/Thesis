@@ -12,20 +12,27 @@
 
 <br/>
 
+@*upload image
+*@
 <form method="post" enctype="multipart/form-data" asp-action="UploadImage" method="post">
     <div>
         <label for="fileInput">Избери снимка:</label>
         <input type="file" id="fileInput" name="imageFile">
     </div>
+    <br/>
     <div>
         <label for="imageName">Превод на мимиката:</label>
-        <input type="text" id="imageName" name="imageName">
+        <input type="text" id="imageName" name="imageName" required style="width: 300px;">
     </div>
-    <button type="submit">Качи</button>
+    <br />
+    <button type="submit" class="btn btn-dark" style="font-size: 18px; padding: 10px 30px;">Качи</button>
 </form>
 
 <br />
 <br />
+
+@*table of words and images
+*@
 <style>
     table {
         border-collapse: collapse;

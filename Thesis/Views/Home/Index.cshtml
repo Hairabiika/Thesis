@@ -8,7 +8,11 @@
 }
 
 <h1>@ViewBag.Message</h1>
+
 <br/>
+
+@*main function
+*@
 
 <form asp-controller="Home" asp-action="CheckWord" method="post">
     <div class="form-group">
@@ -43,20 +47,8 @@ else
     <br />
 }
 
-
-
-@*<script>
-    // Automatically trigger the Index method when the partial view is loaded
-    $(document).ready(function () {
-        $.ajax({
-            url: '@Url.Action("Index", "Home")', // Specify the URL of the Index action
-            type: 'GET',
-            success: function (response) {
-                // Handle the success response, if needed
-            }
-        });
-    });
-</script>*@
+@*admin buttons
+*@
 
 @if (userType == "admin")
 {
@@ -66,6 +58,9 @@ else
 
 <br />
 <br />
+
+@*send message
+*@
 
 <h1>Изпрати ни съобщение!</h1>
 <br />

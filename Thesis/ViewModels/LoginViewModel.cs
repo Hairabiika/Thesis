@@ -4,11 +4,11 @@ namespace Thesis.ViewModels
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "Please enter your email address")]
-        [EmailAddress(ErrorMessage = "Please enter a valid email address")]
+        [Required(ErrorMessage = "Моля, въведете имейл адрес")]
+        [EmailAddress(ErrorMessage = "Моля, въведете реален имейл адрес")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Please enter a password")]
+        [Required(ErrorMessage = "Моля, въведете парола")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }

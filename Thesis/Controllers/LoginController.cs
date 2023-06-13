@@ -29,22 +29,15 @@ namespace Thesis.Controllers
 
         public async Task<IActionResult> Index()
         {
-            // Check if the user is already authenticated
             if (User.Identity.IsAuthenticated)
             {
-                // Perform the logout action
                 await HttpContext.SignOutAsync();
 
-                // Optionally, clear cookies or session data
                 Response.Cookies.Delete(".AspNetCore.Cookies");
-                HttpContext.Session.Clear();
+                HttpContext.Session.Clear(); // delete all previous sessions
 
-                // Redirect to the login page or any other desired page
                 return RedirectToAction("Index", "Login");
             }
-
-            // Continue with the login logic
-            // ...
 
             return View();
         }
@@ -100,6 +93,7 @@ namespace Thesis.Controllers
 
             return RedirectToAction(nameof(Index), "Home");
         }
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
@@ -107,7 +101,7 @@ namespace Thesis.Controllers
 
             Response.Cookies.Delete(".AspNetCore.Cookies");
 
-            HttpContext.Session.Clear(); // Clear session data
+            HttpContext.Session.Clear();
 
             return RedirectToAction(nameof(Index));
         }
@@ -118,9 +112,8 @@ namespace Thesis.Controllers
 
             var verificationLink = Url.Action("NewPass", "Login", new { email }, request.Scheme, request.Host.Value);
             var message = $"Натиснете следния линк, за да рестартирате паролата си:<br><br><a href='{verificationLink}'>{verificationLink}</a><br><br>Поздрави,<br>Хайро";
-            await _emailSender.SendEmailAsync(email, "Нова парола", message);
+            await _emailSender.SendEmailAsync(email, "Нова парола", message); // pass reset mail with link
 
-            // Display a message to check email for verification link
             return View("CheckEmailPass");
         }
 
@@ -168,11 +161,10 @@ namespace Thesis.Controllers
 
             var user = _db.Users.FirstOrDefault(u => u.Email == email);
 
-            var hashedPassword = _passwordHasher.HashPassword(null, pass);
+            var hashedPassword = _passwordHasher.HashPassword(null, pass); // hash the password before saving
 
             user.Password = hashedPassword;
 
-            // Verify the user's email by setting IsVerified to true
             await _db.SaveChangesAsync();
 
             return View("PassResetSuccess");
@@ -189,7 +181,9 @@ namespace Thesis.Controllers
             {
                 throw new Exception("Invalid token or token has expired.");
             }
-            ViewBag.Email = email; // Store the email value in ViewBag to access it in the view
+
+            ViewBag.Email = email; // store the email for reset pass
+
             return View();
         }
     }

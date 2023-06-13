@@ -31,7 +31,6 @@ namespace Thesis
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -46,34 +45,30 @@ namespace Thesis
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.Cookie.SameSite = SameSiteMode.Strict;
-                options.IdleTimeout = TimeSpan.Zero; // Set idle timeout to zero
+                options.IdleTimeout = TimeSpan.Zero;
             });
             services.AddTransient<IEmailSender, EmailSender>();
             services.ConfigureApplicationCookie(options =>
             {
-                options.Cookie.Name = "YourCookieName"; // Replace with a unique cookie name
+                options.Cookie.Name = "YourCookieName";
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromSeconds(1);
                 options.SlidingExpiration = true;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.Cookie.SameSite = SameSiteMode.Strict;
                 options.LoginPath = "/Home/Login";
-                options.LogoutPath = "/Home/Logout"; // Replace with your logout path
+                options.LogoutPath = "/Home/Logout";
             });
 
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                // Add additional authentication schemes if needed
             })
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            // Add authorization policies if needed
 
             services.AddAuthorization();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -84,7 +79,6 @@ namespace Thesis
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -98,7 +92,6 @@ namespace Thesis
             app.UseAuthorization();
             app.Use(async (context, next) =>
             {
-                // Clear cookies
                 context.Response.Cookies.Delete(".AspNetCore.Session");
                 context.Response.Cookies.Delete(".AspNetCore.Identity.Application");
 

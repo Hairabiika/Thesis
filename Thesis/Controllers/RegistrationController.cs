@@ -58,7 +58,7 @@ namespace Thesis.Controllers
                         Password = hashedPassword,
                         Name = name,
                         Type = type,
-                        IsVerified = false // Set IsVerified to false initially
+                        IsVerified = false
                     };
 
                     _db.Users.Add(newUser);
@@ -66,12 +66,10 @@ namespace Thesis.Controllers
 
                     var request = HttpContext.Request;
 
-                    // Compose the verification email message
                     var verificationLink = Url.Action("VerifyEmail", "Registration", new { email }, request.Scheme, request.Host.Value);
                     var message = $"Здравейте, {name},<br><br>Благодаря Ви, че се регистрирахте в нашия сайт!<br><br>Моля, натиснете следния линк, за да валидирате имейл адреса си:<br><br><a href='{verificationLink}'>{verificationLink}</a><br><br>Поздрави,<br>Хайро";
-                    await _emailSender.SendEmailAsync(email, "Валидация на имейл", message);
+                    await _emailSender.SendEmailAsync(email, "Валидация на имейл", message); // validation mail with link
 
-                    // Display a message to check email for verification link
                     return View("CheckEmail");
                 }
                 else
@@ -87,7 +85,6 @@ namespace Thesis.Controllers
         {
             if (string.IsNullOrEmpty(email))
             {
-                // Invalid email
                 return RedirectToAction("EmailVerificationError", "Registration");
             }
 
@@ -95,11 +92,9 @@ namespace Thesis.Controllers
 
             if (user == null || user.IsVerified)
             {
-                // User not found or already verified
                 return RedirectToAction("EmailVerificationError", "Registration");
             }
 
-            // Verify the user's email by setting IsVerified to true
             user.IsVerified = true;
             await _db.SaveChangesAsync();
 

@@ -31,7 +31,7 @@ namespace Thesis.Controllers
             var diplom = _db.Diplom.ToList();
 
             ViewBag.Diplom = diplom;
-            ViewBag.ReturnUrl = returnUrl; // Pass the returnUrl to the view
+            ViewBag.ReturnUrl = returnUrl;
 
             return View();
         }
@@ -52,7 +52,7 @@ namespace Thesis.Controllers
         {
             var userName = User.FindFirstValue(ClaimTypes.Name);
             ViewBag.Message = $"Здравейте, {userName}!";
-            // query the database to check if the word exists
+
             var wordRecord = _db.Diplom.FirstOrDefault(w => w.Word == word.ToLower());
 
             List<string> imagePaths = new List<string>();
@@ -61,7 +61,6 @@ namespace Thesis.Controllers
 
             if (word != null)
             {
-                // set the image path in the ViewBag variable
                 if (wordRecord == null)
                 {
                     string[] tokens = word.ToLower().Split(new[] { ',', ' ', '.', '!', '?', ':', '-' }, StringSplitOptions.RemoveEmptyEntries);
@@ -102,7 +101,6 @@ namespace Thesis.Controllers
             }
             else
             {
-                // set the error message in the ViewBag variable
                 ViewBag.WordNotFound = "Изразът не е намерен!";
             }
            
@@ -116,16 +114,14 @@ namespace Thesis.Controllers
                 return BadRequest("Моля, изберете снимка, която да качите.");
             }
 
-            // Save the image file to the wwwroot/img folder
             var fileName = Path.GetFileName(imageFile.FileName);
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", fileName); //only the name of the image is stored in the database
+
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 await imageFile.CopyToAsync(fileStream);
             }
 
-            // Save the image name to the database
-            var imagePath = $"/img/{fileName}";
             _db.Diplom.Add(new Diplom { Image = fileName, Word = imageName }) ;
             _db.SaveChanges();
 
@@ -137,8 +133,10 @@ namespace Thesis.Controllers
             var image = _db.Diplom.FirstOrDefault(i => i.Id == id);
             var imagePath = Path.Combine("/img", image.Image);
             var imageName = Path.Combine(image.Word);
-            ViewData["ImagePath"] = imagePath;
-            ViewData["ImageName"] = imageName;
+
+            ViewData["ImagePath"] = imagePath; //stores the path so it can visualize the image
+            ViewData["ImageName"] = imageName; //stores the name so it can visualize the name
+
             return View(image);
         }
 
@@ -155,9 +153,8 @@ namespace Thesis.Controllers
         public IActionResult Dictionary()
         {
             var diplom = _db.Diplom.ToList();
-
-            // Add Diplom to the ViewBag
             ViewBag.Diplom = diplom;
+
             return View("~/Views/Admin/Dictionary.cshtml");
         }
 
@@ -169,16 +166,16 @@ namespace Thesis.Controllers
             if (string.IsNullOrEmpty(message) || message.Length < 20)
             {
                 ModelState.AddModelError("message", "Съобщението трябва да е минимум 20 символа!");
-                return View("Index"); // Replace with the appropriate view name
+                return View("Index");
             }
             var mail = "hairosamaz@abv.bg";
             var subject = "Ново съобщение!";
-            await _emailSender.SendEmailAsync(mail, subject, message);
+            await _emailSender.SendEmailAsync(mail, subject, message); //message to admin
 
             var senderMail = User.FindFirstValue(ClaimTypes.Email);
             var senderSumber = "Съобщението е изпратено!";
             var senderMessage = "Благодаря Ви за съобщението! То е получено и ще бъде анализирано от екипа ни!";
-            await _emailSender.SendEmailAsync(senderMail, senderSumber, senderMessage);
+            await _emailSender.SendEmailAsync(senderMail, senderSumber, senderMessage); // message to user
 
             ViewData["SuccessMessage"] = "Съобщението е изпратено!";
 
@@ -188,9 +185,8 @@ namespace Thesis.Controllers
         public IActionResult UserDatabase()
         {
             var userDB = _db.Users.ToList();
-
-            // Add Diplom to the ViewBag
             ViewBag.Users = userDB;
+
             return View("~/Views/Admin/UserDatabase.cshtml");
         }
 

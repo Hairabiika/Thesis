@@ -10,12 +10,6 @@
 
 <form asp-controller="Login" asp-action="PassResetVerification" method="post">
     <input type="hidden" name="email" value="@ViewData["Email"]" data-val-ignore />
-    @*<label for="pass">Парола</label>
-    <input type="password" name="pass" />
-    <br/>
-    <br/>
-    <label for="confpass">Повтори парола</label>
-    <input type="password" name="confpass" />*@
     <div class="form-group">
         <label for="pass">Парола</label>
         <input type="password" class="form-control" id="pass" name="pass" required style="width: 300px;">

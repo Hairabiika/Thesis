@@ -3,7 +3,9 @@
 }
 
 <h1>Въведи имейл</h1>
+
 <br/>
+
 @using (Html.BeginForm("PassReset", "Login", FormMethod.Post))
 {
     @Html.TextBox("email", null, new { placeholder = "Имейл" })
