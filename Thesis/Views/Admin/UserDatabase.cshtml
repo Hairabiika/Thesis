@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Users Database";
+    Layout = "_Layout";
+}
+<h1>Всички потребители</h1>
+
+</br/>
+
+<div>
+    @Html.ActionLink("Начална страница", "Index", "Home", new { returnUrl = ViewContext.HttpContext.Request.Path }, new { @class = "btn btn-primary" })
+</div>
+
+<br />
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+</style>
+<table border="1">
+    <thead border="1">
+        <tr>
+            <th colspan="4" class="no-border" style="text-align: center;">Потребители</th>
+        </tr>
+    </thead>
+    <tbody border="1">
+        @foreach (var user in ViewBag.Users)
+        {
+            <tr>
+                <td border="1">@user.Name</td>
+                <td border="1">@user.Email</td>
+                <td border="1">@user.Type</td>
+                <td><a href="@Url.Action("DeleteUser", "Home", new { id = user.UserId })" class="btn btn-danger">Изтрий</a>
+            </tr>
+        }
+    </tbody>
+</table>

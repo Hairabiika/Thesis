@@ -1,0 +1,101 @@
+﻿@using System.Security.Claims;
+@{
+    ViewData["Title"] = "Home";
+
+    var imagePathh = "~/img/";
+
+    var userType = User.FindFirstValue(ClaimTypes.Role);
+}
+
+<h1>@ViewBag.Message</h1>
+<br/>
+
+<form asp-controller="Home" asp-action="CheckWord" method="post">
+    <div class="form-group">
+        <div class="d-flex align-items-center">
+            <input type="text" class="form-control" name="word" required style="width: 500px;" />
+            <div style="margin-left: 10px;"></div>
+            <input type="submit" value ="Преведи"/>
+        </div>
+    </div>
+</form>
+
+
+@if (ViewBag.ImagePath != null && ViewBag.WordNotFound == null)
+{
+    <br/>
+    foreach (var imagePath in ViewBag.ImagePath)
+    {
+        if (imagePath != null)
+        {
+            var imageName = imagePath;
+            var imageUrl = Url.Content(imagePathh + imageName);
+            <img src="@imageUrl" alt="My Image" style="width: 200px; style=" height: 200px; />
+        }
+    }
+    <br />
+    <br/>
+}
+
+else
+{
+    <p class="text-danger">@ViewBag.WordNotFound</p>
+    <br />
+}
+
+
+
+@*<script>
+    // Automatically trigger the Index method when the partial view is loaded
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("Index", "Home")', // Specify the URL of the Index action
+            type: 'GET',
+            success: function (response) {
+                // Handle the success response, if needed
+            }
+        });
+    });
+</script>*@
+
+@if (userType == "admin")
+{
+    <a asp-controller="Home" asp-action="Dictionary" class="btn btn-success">Речник</a>
+    <a asp-controller="Home" asp-action="UserDatabase" class="btn btn-success">Потребители</a>
+}
+
+<br />
+<br />
+
+<h1>Изпрати ни съобщение!</h1>
+<br />
+
+<form asp-controller="Home" asp-action="SendQuestion" method="post">
+    <div class ="form-group">
+        <div class="d-flex align-items-center">
+            <input type="text" name="message" class="form-control mr-4" required style="width: 500px;" />
+            <div style="margin-left: 10px;"></div>
+            <input type="submit" value="Изпрати" data-val-ignore />
+        </div>
+    </div>
+    <br />
+    @{
+        var messageValidation = ViewData.ModelState.ContainsKey("message")
+        ? ViewData.ModelState["message"].Errors.FirstOrDefault()?.ErrorMessage
+        : null;
+    }
+    @if (!string.IsNullOrEmpty(messageValidation))
+    {
+        <span class="text-danger">@messageValidation</span>
+    }
+    @if (ViewData["SuccessMessage"] != null)
+    {
+        <p class="text-success">@ViewData["SuccessMessage"]</p>
+    }
+</form>
+
+<br/>
+
+<form method="post" action="@Url.Action("Logout", "Login")">
+    <button type="submit">Излез</button>
+</form>

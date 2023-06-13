@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Password reset";
+    Layout = "_Layout";
+    var email = ViewBag.Email;
+
+}
+<h1>Въведете нова парола</h1>
+
+</br/>
+
+<form asp-controller="Login" asp-action="PassResetVerification" method="post">
+    <input type="hidden" name="email" value="@ViewData["Email"]" data-val-ignore />
+    @*<label for="pass">Парола</label>
+    <input type="password" name="pass" />
+    <br/>
+    <br/>
+    <label for="confpass">Повтори парола</label>
+    <input type="password" name="confpass" />*@
+    <div class="form-group">
+        <label for="pass">Парола</label>
+        <input type="password" class="form-control" id="pass" name="pass" required style="width: 300px;">
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="confpass">Повтори парола</label>
+        <input type="password" class="form-control" id="confpass" name="confpass" required style="width: 300px;">
+    </div>
+    <br />
+    @{
+        if (ViewData.ModelState.ContainsKey("pass"))
+        {
+            <span class="text-danger">@Html.ValidationMessage("pass")</span>
+        }
+    }
+    @{
+        if (ViewData.ModelState.ContainsKey("confpass"))
+        {
+            <span class="text-danger">@Html.ValidationMessage("confpass")</span>
+        }
+    }
+    <br/> <br />
+    <input type="submit" value="Потвърди" />   
+</form>

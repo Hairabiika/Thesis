@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@model Thesis.ViewModels.LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h1>Въведете входните си данни</h1>
+<br/>
+<form asp-action="Login" method="post">
+    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+    <div class="form-group">
+        <label for="email">Имейл</label>
+        <input type="email" class="form-control" id="email" name="Email" required style="width: 300px;">
+    </div>
+    <br/>
+    <div class="form-group">
+        <label for="password">Парола</label>
+        <input type="password" class="form-control" id="password" name="Password" required style="width: 300px;">
+    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div>
+        <button type="submit" class="btn btn-outline-info">Вход</button>
+        @Html.ActionLink("Регистрация", "Index", "Registration", null, new { @class = "btn btn-outline-success" })
+    </div>
+</form>
+
+<br/>
+
+@Html.ActionLink("Забравена парола?", "ResetView", "Login")
+

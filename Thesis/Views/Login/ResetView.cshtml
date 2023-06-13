@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Reset Password";
+}
+
+<h1>Въведи имейл</h1>
+<br/>
+@using (Html.BeginForm("PassReset", "Login", FormMethod.Post))
+{
+    @Html.TextBox("email", null, new { placeholder = "Имейл" })
+    <button type="submit">Изпрати</button>
+}
+
+<br/>
+
+@Html.ActionLink("Вход", "Index", "Login", null, new { @class = "btn btn-outline-info" })
+@Html.ActionLink("Регистрация", "Index", "Registration", null, new { @class = "btn btn-outline-success" })

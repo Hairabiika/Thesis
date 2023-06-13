@@ -1,0 +1,37 @@
+﻿@model Thesis.ViewModels.RegistrationViewModel
+@{
+    ViewBag.Title = "Register";
+}
+<h1>Регистрация</h1>
+<form asp-action="Register">
+@*    <div asp-validation-summary="All" class="text-danger"></div>
+*@    <div class="form-group">
+        <label asp-for="Name">Име</label>
+        <input asp-for="Name" class="form-control" required style="width: 300px;" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <br/>
+    <div class="form-group">
+        <label asp-for="Email">Имейл</label>
+        <input asp-for="Email" class="form-control" required style="width: 300px;" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <br />
+    <div class="form-group">
+        <label asp-for="Password">Парола</label>
+        <input asp-for="Password" class="form-control" required style="width: 300px;" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <br />
+    <div class="form-group">
+        <label asp-for="ConfirmPassword">Потвърди парола</label>
+        <input asp-for="ConfirmPassword" class="form-control" required style="width: 300px;" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+    </div>
+    <br/>
+    <div>
+        <button type="submit" class="btn btn-outline-success">Регистрация</button>
+        @Html.ActionLink("Вход", "Index", "Login", null, new { @class = "btn btn-outline-info" })
+    </div>
+</form>
+

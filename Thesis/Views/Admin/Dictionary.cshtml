@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Dictionary";
+    Layout = "_Layout";
+}
+<h1>Речник</h1>
+
+</br/>
+
+<div>
+    @Html.ActionLink("Начална страница", "Index", "Home", new { returnUrl = ViewContext.HttpContext.Request.Path }, new { @class = "btn btn-primary" })
+</div>
+
+<br/>
+
+<form method="post" enctype="multipart/form-data" asp-action="UploadImage" method="post">
+    <div>
+        <label for="fileInput">Избери снимка:</label>
+        <input type="file" id="fileInput" name="imageFile">
+    </div>
+    <div>
+        <label for="imageName">Превод на мимиката:</label>
+        <input type="text" id="imageName" name="imageName">
+    </div>
+    <button type="submit">Качи</button>
+</form>
+
+<br />
+<br />
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+</style>
+<table border="1">
+    <thead border="1">
+        <tr>
+            <th colspan="2" class="no-border" style="text-align: center;">Думи</th>
+        </tr>
+    </thead>
+    <tbody border="1">
+        @foreach (var word in ViewBag.Diplom)
+        {
+            <tr>
+                <td border="1">@word.Word</td>
+                <td>
+                    @Html.ActionLink("Детайли", "Details", "Home", new { id = @word.Id }, new { @class = "btn btn-warning" })
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br/>
+

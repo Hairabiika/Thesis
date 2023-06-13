@@ -1,0 +1,26 @@
+﻿@model Thesis.Models.Diplom
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Детайли за думата</h1>
+
+<br />
+
+<a href="@Url.Action("Dictionary", "Home", new { id = Model.Id })" class="btn btn-outline-primary">Обратно към речника</a>
+
+<br />
+<br />
+
+<h2>@ViewData["ImageName"]</h2>
+
+<br />
+
+<div>
+    <img src="@ViewData["ImagePath"]" alt="Image" style="width: 500px; style=" height: 500px;>
+</div>
+
+<br />
+
+<a href="@Url.Action("Delete", "Home", new { id = Model.Id })" class="btn btn-danger">Изтрий</a>
