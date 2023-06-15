@@ -124,6 +124,13 @@ namespace Thesis.Controllers
                 throw new Exception("Invalid token or token has expired.");
             }
 
+            var user = _db.Users.FirstOrDefault(u => u.Email == email);
+
+            if (user == null)
+            {
+                throw new Exception("Invalid token or token has expired.");
+            }
+
             if (string.IsNullOrEmpty(pass))
             {
                 ModelState.Remove("pass");
@@ -159,8 +166,6 @@ namespace Thesis.Controllers
                 return View("NewPass");
             }
 
-            var user = _db.Users.FirstOrDefault(u => u.Email == email);
-
             var hashedPassword = _passwordHasher.HashPassword(null, pass); // hash the password before saving
 
             user.Password = hashedPassword;
@@ -177,14 +182,29 @@ namespace Thesis.Controllers
 
         public ActionResult NewPass(string email)
         {
-            if (email == null)
+            try
             {
-                throw new Exception("Invalid token or token has expired.");
+                if (email == null)
+                {
+                    throw new Exception("Invalid token or token has expired.");
+                }
+
+                var user = _db.Users.FirstOrDefault(u => u.Email == email);
+
+                if (user == null)
+                {
+                    throw new Exception("Invalid token or token has expired.");
+                }
+
+                ViewBag.Email = email; // store the email for reset pass
+
+                return View();
             }
 
-            ViewBag.Email = email; // store the email for reset pass
-
-            return View();
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
         }
     }
 }
